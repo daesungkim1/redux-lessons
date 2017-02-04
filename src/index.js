@@ -6,15 +6,10 @@ import { createStore } from 'redux'
 
 const store = createStore(todoApp);
 
-const render = () => {
 ReactDOM.render(
   <TodoApp
     store={store}
     getVisibleTodos={getVisibleTodos}  
-    {...store.getState()} />,
+  />,
   document.getElementById('root')
 );
-}
-
-store.subscribe(render);
-render()
