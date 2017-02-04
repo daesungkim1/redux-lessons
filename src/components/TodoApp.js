@@ -1,10 +1,12 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
+import FilterLink from './FilterLink'
 
 let nextTodoId = 0
 
 export default class TodoApp extends Component {
   render() {
-    const { store, todos } = this.props
+    const { todos, visibilityFilter, getVisibleTodos, store } = this.props
+    const visibleTodos = getVisibleTodos(todos, visibilityFilter)
     return (
       <div>
         <input ref={node => {this.input = node}} />
@@ -19,7 +21,7 @@ export default class TodoApp extends Component {
         Add Todo
         </button>
         <ul>
-          {todos.map(todo =>
+          {visibleTodos.map(todo =>
             <li
               key={todo.id}
               onClick={() => {
@@ -38,6 +40,30 @@ export default class TodoApp extends Component {
             </li>
           )}
         </ul>
+        <p>
+          Show:
+          {' '}
+          <FilterLink
+            filter='SHOW_ALL'
+            currentFilter={visibilityFilter}
+            store={store}>
+            All
+          </FilterLink>
+          {' '}
+          <FilterLink
+            filter='SHOW_ACTIVE'
+            currentFilter={visibilityFilter}
+            store={store}>
+            Active
+          </FilterLink>
+          {' '}
+          <FilterLink
+            filter='SHOW_COMPLETED'
+            currentFilter={visibilityFilter}
+            store={store}>
+            Completed
+          </FilterLink>
+        </p>
       </div>
     )
   }

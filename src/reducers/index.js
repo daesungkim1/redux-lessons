@@ -47,6 +47,25 @@ const visibilityFilter = (state = 'SHOW_ALL', action) => {
   }
 };
 
+
+const getVisibleTodos = (todos, filter) => {
+  switch (filter) {
+    case 'SHOW_ALL':
+      return todos;
+    case 'SHOW_COMPLETED':
+      return todos.filter(
+        t => t.completed
+      );
+    case 'SHOW_ACTIVE':
+      return todos.filter(
+        t => !t.completed
+      );
+    default:
+      return todos
+  }
+}
+
+
 // rootReducer
 const todoApp = combineReducers({
   todos: todos,
@@ -54,3 +73,5 @@ const todoApp = combineReducers({
 })
 
 export default todoApp
+export { getVisibleTodos }
+
