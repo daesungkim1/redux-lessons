@@ -3,12 +3,14 @@ import Footer from './Footer'
 import AddTodo from '../containers/AddTodo'
 import VisibleTodoList from '../containers/VisibleTodoList'
 
-const TodoApp = ({getVisibleTodos}) => (
+// params comes from react router
+const TodoApp = ({ params }) => (
   <div>
     <AddTodo />
     <VisibleTodoList
-      getVisibleTodos={getVisibleTodos} />
-    <Footer />
+      filter={params.filter || 'all'}/>
+    <Footer
+      currentFilter={params.filter || 'all'}/>
   </div>
 )
 

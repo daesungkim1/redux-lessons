@@ -1,9 +1,9 @@
 import React from 'react'
 import { Link } from 'react-router'
 
-const FilterLink = ({ filter, children }) => (
+const FilterLink = ({ filter, currentFilter, children }) => (
   <Link
-    to={filter === 'all' ? '' : filter}
+    to={filter === currentFilter ? '' : filter}
     activeStyle={{
       textDecoration: 'none',
       color: 'black'
