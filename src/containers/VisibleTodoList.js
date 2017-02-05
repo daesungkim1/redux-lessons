@@ -20,15 +20,17 @@ const mapStateToProps = (state, { params }) => ({
   todos: getVisibleTodos(state.todos, params.filter || 'all')
 })
 
-const mapDispatchToProps = (dispatch) => ({
-  onTodoClick(id) {
-    dispatch(toggleTodo(id))
-  }
-})
+// action which is dispatched by cb has same arguments.
+
+// const mapDispatchToProps = (dispatch) => ({
+//   onTodoClick(id) {
+//     dispatch(toggleTodo(id))
+//   }
+// })
 
 const VisibleTodoList = withRouter(connect(
   mapStateToProps,
-  mapDispatchToProps
+  { onTodoClick : toggleTodo } // configuration object which corresponding actions
 )(TodoList))
 
 export default VisibleTodoList
