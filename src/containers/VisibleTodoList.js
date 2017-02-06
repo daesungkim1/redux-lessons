@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router'
 import * as actions from '../actions'
-import { getVisibleTodos } from '../reducers'
+import { getVisibleTodos, getIsFetching } from '../reducers'
 import TodoList from '../components/TodoList'
 
 // in order to implement lifecycle hooks,
@@ -19,15 +19,19 @@ class VisibleTodoList extends Component {
   }
 
   fetchData() {
-    const { filter, fetchTodos } = this.props
-    fetchTodos(filter); // available due to connect() with 2nd arg
+    const { filter, requestTodos, fetchTodos } = this.props
+    requestTodos(filter)
+    fetchTodos(filter)
   }
 
   render() {
-    const { toggleTodo, ...rest } = this.props
+    const { toggleTodo, todos, isFetching } = this.props
+    if (isFetching && !todos.length) {
+      return <p>Loading...</p>
+    }
     return (
       <TodoList
-        {...rest}
+        todos={todos}
         onTodoClick={toggleTodo}
       />
     )
@@ -38,6 +42,7 @@ const mapStateToProps = (state, { params }) => {
   const filter = params.filter || 'all'
   return {
     todos: getVisibleTodos(state, filter || 'all'),
+    isFetching: getIsFetching(state, filter),
     filter
   }
 }
