@@ -1,32 +1,50 @@
+import { combineReducers } from 'redux'
 import todo from './todo'
 
-const todos = (state = [], action) => {
+// type of state is object
+const byId = (state = {}, action) => {
   switch (action.type) {
     case 'ADD_TODO':
-      return [
-        ...state,
-        // it calls other reducer
-        todo(undefined, action)
-      ]
     case 'TOGGLE_TODO':
-      return state.map(t => todo(t, action))
+      return {
+        ...state, // need babel-plugin
+        [action.id]: todo(state[action.id], action),
+      }
     default:
       return state
   }
 }
 
-// 1. default export exports reducer
+// type of state is array
+const allIds = (state = [], action) => {
+  switch (action.type) {
+    case 'ADD_TODO':
+      return [...state, action.id]
+    default:
+      return state
+  }
+}
+
+const todos = combineReducers({
+  byId,
+  allIds,
+})
+
 export default todos
 
-// 2. named export exports selector (to be displayed in the UI)
+const getAllTodos = (state) =>
+  state.allIds.map(id => state.byId[id])
+
+// selector
 export const getVisibleTodos = (state, filter) => {
+  const allTodos = getAllTodos(state)
   switch (filter) {
     case 'all':
-      return state;
+      return allTodos;
     case 'completed':
-      return state.filter(t => t.completed);
+      return allTodos.filter(t => t.completed);
     case 'active':
-      return state.filter(t => !t.completed);
+      return allTodos.filter(t => !t.completed);
     default:
       return new Error(`Unknown filter: ${filter}.`)
   }
