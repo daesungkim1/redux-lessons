@@ -4,7 +4,6 @@ import { withRouter } from 'react-router'
 import * as actions from '../actions'
 import { getVisibleTodos } from '../reducers'
 import TodoList from '../components/TodoList'
-import { fetchTodos } from '../api';
 
 // in order to implement lifecycle hooks,
 // needs React class instead connect directly
@@ -20,10 +19,8 @@ class VisibleTodoList extends Component {
   }
 
   fetchData() {
-    const { filter, receiveTodos } = this.props
-    fetchTodos(filter).then(todos =>
-      receiveTodos(todos)
-    )
+    const { filter, fetchTodos } = this.props
+    fetchTodos(filter); // available due to connect() with 2nd arg
   }
 
   render() {
