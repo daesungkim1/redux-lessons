@@ -15,4 +15,19 @@ const todos = (state = [], action) => {
   }
 }
 
+// 1. default export exports reducer
 export default todos
+
+// 2. named export exports selector (to be displayed in the UI)
+export const getVisibleTodos = (state, filter) => {
+  switch (filter) {
+    case 'all':
+      return state;
+    case 'completed':
+      return state.filter(t => t.completed);
+    case 'active':
+      return state.filter(t => !t.completed);
+    default:
+      return new Error(`Unknown filter: ${filter}.`)
+  }
+}
